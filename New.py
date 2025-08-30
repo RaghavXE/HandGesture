@@ -46,12 +46,3 @@ for row in buttons:
         button.pack(side="left", expand=True, fill="both")
 
 root.mainloop()
-
-d = 5
-
-a = 10
-
-h= 78
-
-s = 90
-yubhj=9999
