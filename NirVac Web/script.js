@@ -1,3 +1,7 @@
 class Handgesture{
-    window
+    constructor(){
+        window.onload = function() {
+            alert("Welcome to नीरVac");
+        }
+    }
 }
