@@ -306,9 +306,14 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
         padding: 1.25rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+        box-shadow: var(--shadow-sm);
       }
+      .step:hover,
+      .step:focus-within { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px) scale(1.5); }
+  
       .num {
         inline-size: 34px; block-size: 34px;
         display: inline-grid; place-items: center;
