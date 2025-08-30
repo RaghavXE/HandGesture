@@ -384,6 +384,12 @@
         box-shadow: var(--shadow-sm);
         overflow: hidden;
       }
+      .faq-item:hover{
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
       .faq-btn {
         width: 100%; text-align: left;
         padding: 0.9rem 1rem;
@@ -403,8 +409,8 @@
       .faq-panel > p { margin: 0.75rem 0 1rem; color: rgba(43,42,42,0.8); }
 
       @media (prefers-reduced-motion: reduce) {
-        .faq-panel { transition: none; }
-        .faq-btn .chev { transition: none; }
+        .faq-panel { transition: max-height 0s ease; }
+        .faq-btn .chev { transition: transform 0s ease; }
       }
 
       /* Footer */
