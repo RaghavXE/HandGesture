@@ -1,4 +1,4 @@
-import tkinter as tk
+d = 5
 
 def click(button_text):
     current = entry.get()
