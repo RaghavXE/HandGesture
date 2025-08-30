@@ -1,0 +1,291 @@
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      <title>Nirvāc — Minimal, Accessible Landing Page</title>
+      <meta name="description" content="A polished, responsive landing page redesign with accessibility, smooth interactions, and a soft, modern aesthetic." />
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <a href="#main" class="skip-link">Skip to content</a>
+
+      <header class="navbar" role="banner">
+        <div class="container nav-inner">
+    
+          <a href="#" class="brand" aria-label="Nirvāc home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>Nirvāc</span>
+          </a>
+
+
+          <nav class="primary" aria-label="Primary">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#team">Team</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+
+
+          <div class="nav-cta">
+            <a href="#contact" class="btn btn-primary">Get Started</a>
+          </div>
+
+          <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
+            <span class="menu-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <nav id="mobileNav" class="drawer container" aria-label="Mobile">
+          <a href="#about">About</a>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#team">Team</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main id="main" tabindex="-1">
+
+        <section class="hero section">
+          <div class="container hero-wrap">
+            <div class="reveal">
+              <span class="eyebrow">Sign language, simplified</span>
+              <h1 class="title">Bridge conversations with a minimal, privacy‑first translator.</h1>
+              <p class="lead">
+                Nirvāc is a clean, distraction‑free concept for translating sign language into text—thoughtfully designed for accessibility, clarity, and trust.
+              </p>
+              <div class="cta-row">
+                <a class="btn btn-primary" href="#features">Explore features</a>
+                <a class="btn btn-ghost" href="#how">See how it works</a>
+              </div>
+            </div>
+
+            <aside class="hero-visual reveal" aria-label="Product highlight">
+              <div class="viz-row">
+                <div class="viz-card">
+                  <div class="viz-kpi">On‑device first</div>
+                  <div class="viz-sub">Latency sensitive by design</div>
+                </div>
+                <div class="viz-card">
+                  <div class="viz-kpi">Accessible UI</div>
+                  <div class="viz-sub">High contrast, keyboard‑friendly</div>
+                </div>
+              </div>
+              <div class="viz-card">
+                <p class="muted" style="margin:0;">
+                  Keep sensitive video data local. Process frames on‑device where possible, and fall back to secure cloud inference only when needed.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="about" class="section">
+          <div class="container reveal">
+            <span class="eyebrow">About Nirvāc</span>
+            <h2 class="title">A focused approach to human connection.</h2>
+            <p class="lead">
+              We believe assistive technology should disappear into the background. This concept pares the interface back to only what matters—so people can stay present in their conversations.
+            </p>
+          </div>
+        </section>
+
+
+        <section id="features" class="section" aria-labelledby="features-title">
+          <div class="container">
+            <span class="eyebrow">Features</span>
+            <h2 id="features-title" class="title">Minimal surface, meaningful capabilities.</h2>
+
+            <div class="cards-3">
+              <article class="card reveal">
+                <h3>Clear, distraction‑free UI</h3>
+                <p class="muted">Whitespace and strong hierarchy keep focus on what’s being said—not on the interface.</p>
+              </article>
+
+              <article class="card reveal">
+                <h3>Privacy first</h3>
+                <p class="muted">On‑device processing when possible, with optional secure cloud fallback. Your video never becomes the product.</p>
+              </article>
+
+              <article class="card reveal">
+                <h3>Accessible by default</h3>
+                <p class="muted">WCAG‑minded color, keyboard navigation, and sensible motion respect user needs and preferences.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+  
+        <section id="how" class="section" aria-labelledby="how-title">
+          <div class="container">
+            <span class="eyebrow">How it works</span>
+            <h2 id="how-title" class="title">From motion to meaning, simply.</h2>
+
+            <div class="steps">
+              <div class="step reveal">
+                <div class="num">1</div>
+                <h3>Capture</h3>
+                <p class="muted">Frames are sampled at efficient intervals to preserve fidelity while minimizing compute cost.</p>
+              </div>
+              <div class="step reveal">
+                <div class="num">2</div>
+                <h3>Interpret</h3>
+                <p class="muted">Models map gestures to tokens using learned spatiotemporal features and language priors.</p>
+              </div>
+              <div class="step reveal">
+                <div class="num">3</div>
+                <h3>Render</h3>
+                <p class="muted">Text is presented with strong contrast and low latency for natural, uninterrupted conversation.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="principles-title">
+          <div class="container reveal">
+            <span class="eyebrow">Principles</span>
+            <h2 id="principles-title" class="title">Accessibility is a requirement, not an option.</h2>
+            <ul class="checklist" role="list">
+              <li class="check-item">
+                <span class="check" aria-hidden="true"></span>
+                <div>
+                  <strong>Contrast that respects context</strong>
+                  <div class="muted">AA contrast minimums for text, higher where density increases.</div>
+                </div>
+              </li>
+              <li class="check-item">
+                <span class="check" aria-hidden="true"></span>
+                <div>
+                  <strong>Predictable interaction</strong>
+                  <div class="muted">Focus states, skip links, and no hidden traps; everything works by keyboard.</div>
+                </div>
+              </li>
+              <li class="check-item">
+                <span class="check" aria-hidden="true"></span>
+                <div>
+                  <strong>Respects motion preferences</strong>
+                  <div class="muted">Subtle transitions are disabled for users who prefer reduced motion.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+
+        <section id="team" class="section" aria-labelledby="team-title">
+          <div class="container">
+            <span class="eyebrow">Team</span>
+            <h2 id="team-title" class="title">Practical builders, empathetic by design.</h2>
+
+            <div class="team">
+              <article class="team-card reveal" aria-label="Team member">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar" aria-hidden="true">RN</div>
+                  <div>
+                    <h3 style="margin:0;">Raghav</h3>
+                    <p class="role">Product & Research</p>
+                  </div>
+                </div>
+                <p class="muted" style="margin:0.5rem 0 0;">Focus on human‑centered interactions and model evaluation.</p>
+              </article>
+
+              <article class="team-card reveal" aria-label="Team member">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar" aria-hidden="true">AK</div>
+                  <div>
+                    <h3 style="margin:0;">Akshat</h3>
+                    <p class="role">Systems & ML</p>
+                  </div>
+                </div>
+                <p class="muted" style="margin:0.5rem 0 0;">Latency‑aware pipelines and efficient on‑device inference.</p>
+              </article>
+
+              <article class="team-card reveal" aria-label="Team member">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar" aria-hidden="true">YT</div>
+                  <div>
+                    <h3 style="margin:0;">You</h3>
+                    <p class="role">Community</p>
+                  </div>
+                </div>
+                <p class="muted" style="margin:0.5rem 0 0;">Help guide what matters most and where to take it next.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" class="section" aria-labelledby="faq-title">
+          <div class="container">
+            <span class="eyebrow">FAQ</span>
+            <h2 id="faq-title" class="title">Questions, answered simply.</h2>
+
+            <div class="faq">
+              <div class="faq-item reveal">
+                <h3 style="margin:0;">
+                  <button class="faq-btn" aria-expanded="false" aria-controls="faq-1" id="faq-1-h">
+                    Is this production‑ready?
+                    <span class="chev" aria-hidden="true">▾</span>
+                  </button>
+                </h3>
+                <div id="faq-1" class="faq-panel" role="region" aria-labelledby="faq-1-h">
+                  <p>This is a design‑first concept that emphasizes clarity and accessibility. The technical path can be adapted to your needs.</p>
+                </div>
+              </div>
+
+              <div class="faq-item reveal">
+                <h3 style="margin:0;">
+                  <button class="faq-btn" aria-expanded="false" aria-controls="faq-2" id="faq-2-h">
+                    How do you handle privacy?
+                    <span class="chev" aria-hidden="true">▾</span>
+                  </button>
+                </h3>
+                <div id="faq-2" class="faq-panel" role="region" aria-labelledby="faq-2-h">
+                  <p>We favor on‑device processing and minimize outbound data. If cloud is required, streams are encrypted and never stored.</p>
+                </div>
+              </div>
+
+              <div class="faq-item reveal">
+                <h3 style="margin:0;">
+                  <button class="faq-btn" aria-expanded="false" aria-controls="faq-3" id="faq-3-h">
+                    Can this support multiple sign languages?
+                    <span class="chev" aria-hidden="true">▾</span>
+                  </button>
+                </h3>
+                <div id="faq-3" class="faq-panel" role="region" aria-labelledby="faq-3-h">
+                  <p>Yes—models can be extended or fine‑tuned for different languages, with a consistent interface across variants.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" class="section" aria-labelledby="contact-title">
+          <div class="container reveal">
+            <span class="eyebrow">Get in touch</span>
+            <h2 id="contact-title" class="title">Want to collaborate or explore this further?</h2>
+            <p class="lead">Reach out and we’ll share a roadmap tailored to your goals and constraints.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="mailto:hello@example.com">Email us</a>
+              <a class="btn btn-ghost" href="#top">Back to top</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer role="contentinfo">
+        <div class="container foot">
+          <small>© <span id="year"></span> Nirvāc. Built with care and minimalism.</small>
+          <div style="display:flex; gap:0.75rem; flex-wrap: wrap;">
+            <a class="btn btn-ghost" href="#about">About</a>
+            <a class="btn btn-ghost" href="#features">Features</a>
+            <a class="btn btn-ghost" href="#contact">Contact</a>
+          </div>
+        </div>
+      </footer>
+
+      <script src="script.js"></script>
+    </body>
+  </html>
