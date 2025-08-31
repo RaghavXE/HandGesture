@@ -20,11 +20,11 @@ The project also includes a **simple web interface** for demonstrations, making 
 
 
 ## ✨ Features  
-- 🎥 **Real-time detection** of ASL hand gestures using a webcam  
-- 🧠 **Pre-trained MLP model** (`asl_mlp_model.pth`) for gesture classification  
-- 🌐 **Web-based interface** (`index.html`, `run.html`) for interactive usage  
-- 🔊 (Optional) **Text-to-speech support** for vocalizing translated signs  
-- 📂 Includes **dataset folder (`asl_alphabet_train/`)** for retraining  
+- **Real-time detection** of ASL hand gestures using a webcam  
+- **Pre-trained MLP model** (`asl_mlp_model.pth`) for gesture classification  
+- **Web-based interface** (`index.html`, `run.html`) for interactive usage  
+- **Text-to-speech support** for vocalizing translated signs  
+- Includes **dataset folder (`asl_alphabet_train/`)** for retraining  
 
 ---
 
@@ -72,7 +72,6 @@ The project also includes a **simple web interface** for demonstrations, making 
       python New.py
       Dataset used: asl_alphabet_train/
   
-      
 
 ## 📂 Project Structure
 
@@ -95,16 +94,21 @@ The project also includes a **simple web interface** for demonstrations, making 
 ---
 ## 📸 Demo
 
-  🎥 Real-time Translation Example
-
+  🎥 Real-time Translation Example:
+    
+  
 ---
 
 ## 👥 Contributors
     
-  🔹Raghav — Backend Developer    
+  🔹Raghav — Backend Developer 
+  
   🔹Ankit — Model Training & Testing
+  
   🔹Anmol — Dataset Development
+  
   🔹Sri Sai — Frontend Developer
+  
   🔹Nishant — UI/UX & Integration
   
 
