@@ -23,7 +23,13 @@
           last = now;
         });
       })();
-
+function openPopup() {
+    window.open(
+      "run.html",       
+      "popupWindow",     
+      "width=1200,height=1000,top=100,left=100,resizable=yes,scrollbars=yes"
+    );
+  }
       // Smooth scroll with reduced motion respect
       (function () {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
