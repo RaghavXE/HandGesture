@@ -4,16 +4,36 @@ import numpy as np
 import joblib
 import os
 from tqdm import tqdm
+import hashlib
+import sys
 
 custom_file = "custom_signs.pkl"
+custom_file_hash = "custom_signs.pkl.sha256"
+
+def verify_file_integrity(data_file, hash_file):
+    if not os.path.exists(data_file) or not os.path.exists(hash_file):
+        return False
+    try:
+        with open(data_file, "rb") as f:
+            file_bytes = f.read()
+        with open(hash_file, "r") as f:
+            expected_hash = f.read().strip()
+        actual_hash = hashlib.sha256(file_bytes).hexdigest()
+        return actual_hash == expected_hash
+    except Exception:
+        return False
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.6)
 mp_drawing = mp.solutions.drawing_utils
 
-# Load existing custom signs if available
-if os.path.exists(custom_file):
-    custom_signs = joblib.load(custom_file)
+# Load existing custom signs if available and integrity verified
+if os.path.exists(custom_file) and os.path.exists(custom_file_hash):
+    if verify_file_integrity(custom_file, custom_file_hash):
+        custom_signs = joblib.load(custom_file)
+    else:
+        print(f"[ERROR] Integrity check failed for {custom_file}. File may be tampered. Exiting for safety.")
+        sys.exit(1)
 else:
     custom_signs = {}
 
@@ -80,6 +100,12 @@ while True:
             custom_signs[label] = dataset
 
         joblib.dump(custom_signs, custom_file)
+        # Write hash after saving
+        with open(custom_file, "rb") as f:
+            file_bytes = f.read()
+        file_hash = hashlib.sha256(file_bytes).hexdigest()
+        with open(custom_file_hash, "w") as f:
+            f.write(file_hash)
         print(f"[✅ SAVED] Added {len(dataset)} samples for sign '{label}'")
 
 cap.release()
