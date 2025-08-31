@@ -110,7 +110,7 @@ The project also includes a **simple web interface** for demonstrations, making 
   
   🔹Ankit — Model Training & Testing
   
-  🔹Anmol — Dataset Development
+  🔹Anmol — Dataset Model Developer
   
   🔹Sri Sai — Frontend Developer
   
