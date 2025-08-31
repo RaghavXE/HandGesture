@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Capture — Meet-like Layout</title>
+  <style>
+    :root{
+      --bg:#f8fafc; --surface:#ffffff; --border:#e5e7eb;
+      --text:#0f172a; --primary:#2563eb;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui;
+      background:var(--bg);color:var(--text);line-height:1.5;}
+    .container{max-width:1200px;margin:auto;padding:24px 20px;}
+    header{height:64px;display:flex;align-items:center;
+      justify-content:space-between;padding-inline:20px;
+      border-bottom:1px solid var(--border);background:var(--surface);
+      position:sticky;top:0;z-index:10;}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:600;}
+    .brand-mark{width:24px;height:24px;border-radius:6px;background:var(--primary);}
+    .grid{display:grid;grid-template-columns:1fr;gap:28px;}
+    @media(min-width:1024px){.grid{grid-template-columns:1.25fr .75fr;align-items:start;}}
+    .card,.panel,.output{background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;padding:16px;}
+    .video-shell{position:relative;width:100%;aspect-ratio:16/9;background:#000;
+      border-radius:12px;overflow:hidden;}
+    video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;}
+    .overlay{position:absolute;inset:auto 12px 12px 12px;display:flex;justify-content:flex-end;}
+    .chip{background:rgba(255,255,255,.9);border:1px solid var(--border);
+      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:500;}
+    .panel h2{margin:4px 0 12px;font-size:20px;}
+    .muted{color:#475569;font-size:14px;margin-bottom:14px;}
+    .field{display:flex;gap:10px;align-items:center;margin:8px 0 6px;}
+    .input{flex:1;border:1px solid var(--border);padding:10px 12px;border-radius:10px;font-size:14px;}
+    .btn{background:var(--primary);color:#fff;padding:10px 14px;
+      font-weight:600;font-size:14px;border:none;border-radius:10px;cursor:pointer;}
+    .btn-outline{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+    .list{margin-top:14px;border-top:1px dashed var(--border);padding-top:12px;
+      max-height:170px;overflow:auto;}
+    .list ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+    .list li{padding:8px 10px;border:1px solid var(--border);border-radius:10px;
+      display:flex;justify-content:space-between;align-items:center;font-size:14px;}
+    .badge{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;
+      background: color-mix(in srgb,var(--primary)14%,var(--surface));
+      border:1px solid color-mix(in srgb,var(--primary)25%,var(--border));}
+    textarea{width:100%;min-height:140px;resize:vertical;border:1px solid var(--border);
+      background:var(--bg);border-radius:10px;padding:12px;font-size:14px;}
+    footer{padding:28px 20px 40px;color:#475569;font-size:13px;text-align:center;}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+    .brand-logo {
+        height: 32px;  
+        width: auto;
+        margin-right: 6px;
+        vertical-align: middle;
+      } 
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="logo.png" alt="Sign Capture Logo" class="brand-logo" />
+      <!-- <span class="brand-mark"> -->
+
+      </span><span>Sign Capture</span></div>
+    <div class="actions"><button class="btn btn-outline" id="resetBtn">Reset session</button></div>
+  </header>
+
+  <main class="container">
+    <section class="grid">
+      <div class="card">
+        <div class="video-shell">
+          <video id="camera" autoplay muted playsinline></video>
+          <div class="overlay"><span class="chip" id="cameraStatus">Camera off</span></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h2>Custom sign</h2>
+        <p class="muted">Register a sign label to use during this session.</p>
+        <div class="field">
+          <label for="signInput" class="sr-only">Sign label</label>
+          <input id="signInput" class="input" type="text" placeholder="e.g., Hello, Thank you, Yes"/>
+          <button id="saveBtn" class="btn" type="button">Save</button>
+        </div>
+        <div class="actions"><button id="exportBtn" class="btn btn-outline">Export list</button></div>
+        <div class="list"><div class="muted">Saved signs <span id="count" class="badge">0</span></div><ul id="signList"></ul></div>
+      </aside>
+    </section>
+
+    <section class="output">
+      <label for="outputText">Output</label>
+      <textarea id="outputText" placeholder="Recognized text will appear here..." readonly></textarea>
+    </section>
+  </main>
+
+  <footer>© 2025 Sign Capture — Clean, minimal, accessible.</footer>
+
+  <!-- <script> 
+    // --- CAMERA ---
+    async function startCamera() {
+      const videoEl = document.getElementById('camera');
+      const status = document.getElementById('cameraStatus');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video:true, audio:false });
+        videoEl.srcObject = stream;
+        status.textContent = "Camera on";
+      } catch (err) {
+        status.textContent = "Camera blocked";
+        console.warn("Camera error:", err);
+      }
+    }
+
+    // --- SIGN LIST ---
+    const signs=[],signInput=document.getElementById('signInput'),
+          signList=document.getElementById('signList'),
+          count=document.getElementById('count');
+
+    function renderList(){
+      signList.innerHTML='';
+      signs.forEach((label,idx)=>{
+        const li=document.createElement('li');
+        li.innerHTML=`<span>${idx+1}. ${label}</span><button data-idx="${idx}" style="background:none;border:none;color:var(--primary);cursor:pointer;">×</button>`;
+        li.querySelector('button').onclick=()=>{signs.splice(idx,1);renderList();}
+        signList.appendChild(li);
+      });
+      count.textContent=signs.length;
+    }
+    document.getElementById('saveBtn').onclick=()=>{
+      const val=signInput.value.trim();if(!val)return;
+      signs.push(val);signInput.value='';renderList();signInput.focus();
+    };
+    document.getElementById('resetBtn').onclick=()=>{signs.length=0;renderList();}
+    document.getElementById('exportBtn').onclick=()=>{
+      if(!signs.length)return;
+      const blob=new Blob([signs.join("\\n")],{type:'text/plain'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+      a.download='signs.txt';a.click();URL.revokeObjectURL(a.href);
+    };
+    signInput.addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('saveBtn').click();});
+
+    // --- SEND FRAME TO PYTHON BACKEND ---
+    async function sendFrame(){
+      const video=document.getElementById('camera');
+      if(video.videoWidth===0)return;
+      const canvas=document.createElement('canvas');
+      canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+      canvas.getContext('2d').drawImage(video,0,0);
+      canvas.toBlob(async blob=>{
+        const formData=new FormData();
+        formData.append('frame',blob,'frame.jpg');
+        try{
+          const res=await fetch('http://127.0.0.1:5000/predict',{method:'POST',body:formData});
+          if(res.ok){
+            const data=await res.json();
+            const output=document.getElementById('outputText');
+            output.value+=data.prediction+"\n";
+            output.scrollTop=output.scrollHeight;
+          }
+        }catch(err){console.warn("Backend error:",err);}
+      },'image/jpeg');
+    }
+    setInterval(sendFrame,2000);
+
+    window.addEventListener('DOMContentLoaded',startCamera);
+    async function sendFrame(){
+  const video=document.getElementById('camera');
+  if(video.videoWidth===0)return;
+  const canvas=document.createElement('canvas');
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+
+  canvas.toBlob(async blob=>{
+    const formData=new FormData();
+    formData.append('frame',blob,'frame.jpg');
+
+    const res=await fetch('http://127.0.0.1:5000/predict',{
+      method:'POST', body:formData
+    });
+    if(res.ok){
+      const data=await res.json();
+      document.getElementById('outputText').value += data.prediction + "\n";
+    }
+  },'image/jpeg');
+}
+setInterval(sendFrame,2000);
+
+  </script> -->
+
+  <script>
+  async function startCamera() {
+    const videoEl = document.getElementById('camera');
+    const status = document.getElementById('cameraStatus');
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video:true, audio:false });
+      videoEl.srcObject = stream;
+      status.textContent = "Camera on";
+    } catch (err) {
+      status.textContent = "Camera blocked";
+      console.warn("Camera error:", err);
+    }
+  }
+
+  let lastPrediction = "";  
+
+  async function sendFrame(){
+    const video=document.getElementById('camera');
+    if(video.videoWidth===0)return;
+
+    const canvas=document.createElement('canvas');
+    canvas.width=video.videoWidth;
+    canvas.height=video.videoHeight;
+    canvas.getContext('2d').drawImage(video,0,0);
+
+    canvas.toBlob(async blob=>{
+      const formData=new FormData();
+      formData.append('frame',blob,'frame.jpg');
+      try{
+        const res=await fetch('http://127.0.0.1:5000/predict',{method:'POST',body:formData});
+        if(res.ok){
+          const data=await res.json();
+          const output=document.getElementById('outputText');
+
+          if(data.prediction && data.prediction !== lastPrediction){ 
+            output.value+=data.prediction+"\n";
+            output.scrollTop=output.scrollHeight;
+            lastPrediction = data.prediction;
+          }
+        }
+      }catch(err){console.warn("Backend error:",err);}
+    },'image/jpeg');
+  }
+
+  setInterval(sendFrame,1000);
+  window.addEventListener('DOMContentLoaded',startCamera);
+</script>
+
+</body>
+</html>
