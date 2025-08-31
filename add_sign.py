@@ -1,14 +1,14 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-import joblib
 import os
 from tqdm import tqdm
 import hashlib
 import sys
+import json
 
-custom_file = "custom_signs.pkl"
-custom_file_hash = "custom_signs.pkl.sha256"
+custom_file_json = "custom_signs.json"
+custom_file_hash = "custom_signs.json.sha256"
 
 def verify_file_integrity(data_file, hash_file):
     if not os.path.exists(data_file) or not os.path.exists(hash_file):
@@ -28,14 +28,21 @@ hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_c
 mp_drawing = mp.solutions.drawing_utils
 
 # Load existing custom signs if available and integrity verified
-if os.path.exists(custom_file) and os.path.exists(custom_file_hash):
-    if verify_file_integrity(custom_file, custom_file_hash):
-        custom_signs = joblib.load(custom_file)
+custom_signs = {}
+if os.path.exists(custom_file_json) and os.path.exists(custom_file_hash):
+    if verify_file_integrity(custom_file_json, custom_file_hash):
+        try:
+            with open(custom_file_json, "r") as f:
+                custom_signs = json.load(f)
+            # Convert lists back to numpy arrays
+            for label in custom_signs:
+                custom_signs[label] = [np.array(arr, dtype=np.float32) for arr in custom_signs[label]]
+        except Exception:
+            print(f"[ERROR] Failed to load {custom_file_json}. Exiting for safety.")
+            sys.exit(1)
     else:
-        print(f"[ERROR] Integrity check failed for {custom_file}. File may be tampered. Exiting for safety.")
+        print(f"[ERROR] Integrity check failed for {custom_file_json}. File may be tampered. Exiting for safety.")
         sys.exit(1)
-else:
-    custom_signs = {}
 
 def extract_landmarks(image):
     """Extract hand landmarks (126 features) using Mediapipe."""
@@ -99,9 +106,12 @@ while True:
         else:
             custom_signs[label] = dataset
 
-        joblib.dump(custom_signs, custom_file)
+        # Save as JSON (safe serialization)
+        serializable_signs = {k: [arr.tolist() for arr in v] for k, v in custom_signs.items()}
+        with open(custom_file_json, "w") as f:
+            json.dump(serializable_signs, f)
         # Write hash after saving
-        with open(custom_file, "rb") as f:
+        with open(custom_file_json, "rb") as f:
             file_bytes = f.read()
         file_hash = hashlib.sha256(file_bytes).hexdigest()
         with open(custom_file_hash, "w") as f:
