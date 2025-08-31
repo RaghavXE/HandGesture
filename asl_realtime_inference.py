@@ -9,7 +9,11 @@ import os
 from sklearn.metrics.pairwise import cosine_similarity
 from google import generativeai as genai  
 
-genai.configure(api_key="AIzaSyDRdbH53DhMUoBgWXIekn8ld7ZvIqnK3GE")
+# Securely load API key from environment variable
+API_KEY = os.environ.get("GOOGLE_GENAI_API_KEY")
+if not API_KEY:
+    raise RuntimeError("Google Generative AI API key not found in environment variable 'GOOGLE_GENAI_API_KEY'.")
+genai.configure(api_key=API_KEY)
 gemini_model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 def fix_grammar(raw_sentence):
