@@ -88,11 +88,11 @@
         max-width: 65ch;
         text-wrap: pretty;
       }
-      .lead:hover{
+      /* .lead:hover{
         color: burlywood;
         transform: scale(1.05); 
         opacity: 1;
-      }
+      } */
 
       .sr-only {
         position: absolute !important;
@@ -161,7 +161,7 @@
         font-weight: 800; letter-spacing: -0.02em;
       }
       .brand-logo {
-        height: 32px;  
+        height: 60px;  
         width: auto;
         margin-right: 6px;
         vertical-align: middle;
@@ -347,7 +347,7 @@
       }
       .check-item:hover{
         color: burlywood;
-        transform: scale(1.05); 
+        transform: scale(0.99); 
         opacity: 1;
       }
       
