@@ -6,6 +6,7 @@ import torch.nn as nn
 import pyttsx3
 import joblib
 import os
+import hashlib
 from sklearn.metrics.pairwise import cosine_similarity
 from google import generativeai as genai  
 
@@ -52,14 +53,37 @@ model = ASL_MLP(input_size=126, hidden_size=256, num_classes=len(labels)).to(dev
 model.load_state_dict(torch.load("asl_mlp_model.pth", map_location=device))
 model.eval()
 
-# Load custom signs if available
+# --- Begin Secure Custom Signs Loading ---
+def verify_file_integrity(file_path, expected_hash_path):
+    """Verify the SHA256 hash of a file matches the expected hash."""
+    if not os.path.exists(expected_hash_path):
+        print(f"[SECURITY WARNING] Hash file {expected_hash_path} not found. Skipping custom sign loading.")
+        return False
+    with open(expected_hash_path, 'r') as f:
+        expected_hash = f.read().strip()
+    sha256 = hashlib.sha256()
+    with open(file_path, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            sha256.update(chunk)
+    file_hash = sha256.hexdigest()
+    if file_hash != expected_hash:
+        print(f"[SECURITY WARNING] Integrity check failed for {file_path}. File hash does not match expected hash.")
+        return False
+    return True
+
 custom_file = "custom_signs.pkl"
+custom_hash_file = "custom_signs.pkl.sha256"
 if os.path.exists(custom_file):
-    custom_signs = joblib.load(custom_file)
-    print(f"[INFO] Loaded {len(custom_signs)} custom signs from {custom_file}")
+    if verify_file_integrity(custom_file, custom_hash_file):
+        custom_signs = joblib.load(custom_file)
+        print(f"[INFO] Loaded {len(custom_signs)} custom signs from {custom_file}")
+    else:
+        custom_signs = {}
+        print(f"[INFO] Custom signs file failed integrity check. No custom signs loaded.")
 else:
     custom_signs = {}
     print("[INFO] No custom signs found.")
+# --- End Secure Custom Signs Loading ---
 
 engine = pyttsx3.init()
 
