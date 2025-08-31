@@ -6,12 +6,14 @@ import torch.nn as nn
 import pyttsx3
 import joblib
 import os
-import hashlib
 from sklearn.metrics.pairwise import cosine_similarity
 from google import generativeai as genai  
+from packaging import version
+import hashlib
 
 # Securely load API key from environment variable
 API_KEY = os.environ.get("GOOGLE_GENAI_API_KEY")
+if not API_KEY:
 if not API_KEY:
     raise RuntimeError("Google Generative AI API key not found in environment variable 'GOOGLE_GENAI_API_KEY'.")
 genai.configure(api_key=API_KEY)
@@ -43,17 +45,36 @@ class ASL_MLP(nn.Module):
             nn.Dropout(0.3),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Linear(hidden_size, num_classes)
         )
     def forward(self, x):
         return self.net(x)
 
+def verify_file_hash(filepath, expected_hash):
+    sha256 = hashlib.sha256()
+    with open(filepath, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            sha256.update(chunk)
+    return sha256.hexdigest() == expected_hash
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = ASL_MLP(input_size=126, hidden_size=256, num_classes=len(labels)).to(device)
-model.load_state_dict(torch.load("asl_mlp_model.pth", map_location=device))
+
+# Secure torch.load by restricting to only loading tensors, with version check and file hash verification
+MODEL_PATH = "asl_mlp_model.pth"
+MODEL_HASH = os.environ.get("ASL_MLP_MODEL_HASH")  # Set this env var to the expected SHA256 hash
+if not MODEL_HASH:
+    raise RuntimeError("Expected model hash not set in environment variable 'ASL_MLP_MODEL_HASH'.")
+if not verify_file_hash(MODEL_PATH, MODEL_HASH):
+    raise RuntimeError(f"Model file hash mismatch for {MODEL_PATH}. Possible tampering detected.")
+if version.parse(torch.__version__) < version.parse("2.2.0"):
+    raise RuntimeError("PyTorch >= 2.2.0 is required for safe model loading with weights_only=True.")
+with open(MODEL_PATH, "rb") as f:
+    state_dict = torch.load(f, map_location=device, weights_only=True)
+model.load_state_dict(state_dict)
 model.eval()
 
-# --- Begin Secure Custom Signs Loading ---
+# Load custom signs if available
+custom_file = "custom_signs.pkl"
 def verify_file_integrity(file_path, expected_hash_path):
     """Verify the SHA256 hash of a file matches the expected hash."""
     if not os.path.exists(expected_hash_path):
