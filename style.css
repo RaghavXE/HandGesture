@@ -160,6 +160,12 @@
         display: inline-flex; align-items: center; gap: 0.6rem;
         font-weight: 800; letter-spacing: -0.02em;
       }
+      .brand-logo {
+        height: 32px;  
+        width: auto;
+        margin-right: 6px;
+        vertical-align: middle;
+      } 
       .brand-mark {
         inline-size: 28px; block-size: 28px;
         border-radius: 8px; background: var(--cta);
@@ -514,4 +520,3 @@
         max-width: 100%;
       }
     }
-
