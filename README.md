@@ -115,6 +115,16 @@ The project also includes a **simple web interface** for demonstrations, making 
   🔹Sri Sai — Frontend Developer
   
   🔹Nishant — UI/UX & Integration
+
+
+## 🔒 Security & Vulnerability Scanning  
+
+  This repository is regularly scanned using **PensarAI** to identify potential vulnerabilities and dependency issues.  
+
+  
+  ![Pensar Scan Results](WhatsApp%20Image%202025-08-31%20at%2015.10.32_eef2402d.jpg)
+
+
   
 
 ## 📜 License
