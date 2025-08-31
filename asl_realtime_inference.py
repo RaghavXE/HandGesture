@@ -6,6 +6,7 @@ import torch.nn as nn
 import pyttsx3
 import joblib
 import os
+import hashlib
 from sklearn.metrics.pairwise import cosine_similarity
 from google import generativeai as genai  
 
@@ -29,9 +30,29 @@ def fix_grammar(raw_sentence):
         print(f"[Gemini Error] {e}")
         return raw_sentence  
 
-# Load label encoder and model
-le = joblib.load("label_encoder.pkl")
+# --- Secure deserialization for label_encoder.pkl ---
+LABEL_ENCODER_PATH = "label_encoder.pkl"
+LABEL_ENCODER_HASH = "<INSERT_ACTUAL_SHA256_HASH_HERE>"  # TODO: Replace with the actual SHA-256 hash of your trusted label_encoder.pkl
+
+def verify_file_hash(filepath, expected_hash):
+    sha256 = hashlib.sha256()
+    try:
+        with open(filepath, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                sha256.update(chunk)
+        file_hash = sha256.hexdigest()
+        return file_hash == expected_hash
+    except Exception as e:
+        print(f"[ERROR] Could not verify hash for {filepath}: {e}")
+        return False
+
+if not os.path.exists(LABEL_ENCODER_PATH):
+    raise RuntimeError(f"Label encoder file '{LABEL_ENCODER_PATH}' not found.")
+if not verify_file_hash(LABEL_ENCODER_PATH, LABEL_ENCODER_HASH):
+    raise RuntimeError(f"Label encoder file '{LABEL_ENCODER_PATH}' failed integrity check. Aborting load.")
+le = joblib.load(LABEL_ENCODER_PATH)
 labels = list(le.classes_)
+# --- End secure deserialization ---
 
 class ASL_MLP(nn.Module):
     def __init__(self, input_size=126, hidden_size=256, num_classes=len(labels)):
