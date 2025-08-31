@@ -92,9 +92,14 @@ The project also includes a **simple web interface** for demonstrations, making 
       │── README.md                   # Documentation
 
 ---
-## 📸 Demo
 
-  🎥 Real-time Translation Example:
+
+## 📸 Demo  
+
+   Here’s the project in action:  
+    
+   ![HandGesture Demo](WhatsApp%20Image%202025-08-31%20at%2010.00.12_dc497f8d.jpg)
+
     
   
 ---
