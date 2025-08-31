@@ -463,7 +463,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       position: relative;
     }
     .team-card:hover {
@@ -472,13 +472,24 @@
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
+    .team-card img, .avatar-img {
+      display: block;
+      margin: 0 auto;
+      border-radius: 12px; 
+      width: 100px;       
+      height: 100px;      
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
     .avatar-img {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
+      width: 130px;
+      height: 150px;
+      border-radius: 10%;
       object-fit: cover;
       margin-bottom: 0.7rem;
       border: 2px solid var(--border, #DCC5B2);
+      box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.06));
     }
 
     .avatar {
@@ -507,8 +518,9 @@
     }
 
     .desc {
-      font-size: 0.98rem;
+      font-size: 0.90rem;
       margin-top: 0.2rem;
+
     }
 
     @media (max-width: 960px) {
